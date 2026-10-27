@@ -18,32 +18,35 @@ def mapper(transactions, filename="mapper_output.txt"):
 
 def read_mapper(file):
     # read in mapper_output, remove whitespace
-    for line in file:
+    opened_file = open(file, "r")
+    for line in opened_file:
         yield line.strip().split(' ')
 
 def shuffler(file):
-    #data = read_mapper(file)
+    data = read_mapper(file)
+    #group transactions by CustomerID, sort by CustomerID
+
+    for key, keygroup in groupby(data, itemgetter(0)):
+        # sum the amounts for each CustomerID
+        values = ' '.join(sorted(v for k, v in keygroup))
+        print("%s %s" % (key, values))
+
+"""
     with open(file, "r") as f:
         for line in f:
             CustomerID, Amount = line.strip().split(' ')
             sortedID = " ".join(sorted([CustomerID]))
             print(f"CustomerID: {sortedID}, Amount: {Amount}")
-            
-            #group transactions by each customer
-            #for key, keygroup in groupby(tokens, itemgetter(0)):
-                #with open("shuffler_output.txt", "a") as f:
-            #values = ' '.join(sorted(v for k, v in keygroup))
-            #f.write("%s %s\n" % (key, values))
-
+    """
 
 
 # string = "CustomerID, Amount
 transactions = [
     "Alice, 20",
     "Bob, 50",
-    "Alice, 30",
-    "Bob, 20",
-    "Charlie, 40"
+    "Alice, 30"
+    #"Bob, 20",
+    #"Charlie, 40"
 ]
 
 # processes the list of customer transactions
