@@ -4,7 +4,7 @@ from itertools import groupby
 from operator import itemgetter
 
 #implment a map function
-def mapper(transactions):
+def mapper(transactions, filename="mapper_output.txt"):
     for line in transactions:
         # split string into CustomerID and Amount
         line = line.strip()
@@ -16,24 +16,24 @@ def mapper(transactions):
             f.write("%s %s\n" % (CustomerID, Amount))
     return filename #returns the file path as a string
 
-def read_mapper():
+def read_mapper(file):
     # read in mapper_output, remove whitespace
-    for line in filename:
+    for line in file:
         yield line.strip().split(' ')
 
-def shuffler():
-    with open(filename, "r") as f:
-        data = read_mapper()
-        #for line in f:
-            #CustomerID, Amount = line.strip().split(' ')
-            #sortedID = " ".join(sorted([CustomerID]))
-            #print(f"CustomerID: {sortedID}")
+def shuffler(file):
+    #data = read_mapper(file)
+    with open(file, "r") as f:
+        for line in f:
+            CustomerID, Amount = line.strip().split(' ')
+            sortedID = " ".join(sorted([CustomerID]))
+            print(f"CustomerID: {sortedID}, Amount: {Amount}")
+            
             #group transactions by each customer
-        
-        for key, keygroup in groupby(data, itemgetter(0)):
-            values = ' '.join(sorted(v for k, v in keygroup))
-            print("%s %s\n" % (key, values))
-
+            #for key, keygroup in groupby(tokens, itemgetter(0)):
+                #with open("shuffler_output.txt", "a") as f:
+            #values = ' '.join(sorted(v for k, v in keygroup))
+            #f.write("%s %s\n" % (key, values))
 
 
 
@@ -46,9 +46,6 @@ transactions = [
     "Charlie, 40"
 ]
 
-filename = 'mapper_output.txt'
-
 # processes the list of customer transactions
-mapper(transactions)
-shuffler()
+shuffler(mapper(transactions))
 
