@@ -1,5 +1,5 @@
-dylan 1
 Alice 20
-dylan 5
-Alice 50
-Charlie 100
+Bob 50
+Alice 30
+Bob 20
+Charlie 40

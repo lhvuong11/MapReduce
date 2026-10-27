@@ -36,31 +36,32 @@ def shuffler(filename):
         yield key, values
         #print("%s %s" % (key, values))
 
-def reducer(grouped_list):
+def reducer(shuffled_file):
     #sum the amounts for each CustomerID
-    for key, value in grouped_list:
+    for key, value in shuffled_file:
         #total = sum(int(v) for k, v in value)
+        #total = sum(int(v) for v in key[1:])
         yield key, sum(value)
 
-# string = "CustomerID, Amount
+# string = CustomerID, Amount
 transactions = [
-    "dylan, 1",
-    "Alice,  20",
-    "dylan, 5",
-    "Alice, 50",
-    "Charlie,  100"
+    "Alice, 20",
+    "Bob, 50",
+    "Alice, 30",
+    "Bob, 20",
+    "Charlie, 40"
 ]
 
 # processes the list of customer transactions
 mapped_file = mapper(transactions)
-grouped_file = shuffler(mapped_file)
+shuffled_file = shuffler(mapped_file)
 
 print("\nGiven transactions of:")
 for transaction in transactions:
     print(transaction)
 
 print("\nThe total amount spent by each customer is:")
-for key, value in reducer(grouped_file):
+for key, value in reducer(shuffled_file):
     #prints the customer's name as capitalized even if originally lowercase
     print("%s: %s" % (key.capitalize(), value))
 print("\n")
